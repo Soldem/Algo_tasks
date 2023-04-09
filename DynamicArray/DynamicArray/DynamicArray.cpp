@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -13,6 +13,8 @@ private:
 
 public:
     DynamicArray();
+
+    ~DynamicArray();
 
     void push(T elem);
 
@@ -188,6 +190,12 @@ void DynamicArray<T>::clear()
     _capacity = 1;
     _size = 0;
     cout << "ok" << endl;
+}
+
+template<typename T>
+DynamicArray<T>::~DynamicArray() {
+
+    clear();
 }
 
 template<typename T>
