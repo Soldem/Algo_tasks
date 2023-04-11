@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 template<typename T>
 class DynamicArray
 {
@@ -36,16 +34,16 @@ public:
 int main(){
     DynamicArray<int> arr;
 
-    string command;
+    std::string command;
     int num;
     while (true){
-        cin >> command;
+        std::cin >> command;
         if (command == "push"){
-            cin >> num;
+            std::cin >> num;
             arr.push(num);
         }
         else if (command == "at"){
-            cin >> num;
+            std::cin >> num;
             arr.at_i(num);
         }
         else if (command == "capacity"){
@@ -58,7 +56,7 @@ int main(){
             arr.size();
         }
         else if (command == "resize"){
-            cin >> num;
+            std::cin >> num;
             arr.resize(num);
         }
         else if (command == "clear"){
@@ -89,12 +87,12 @@ void DynamicArray<T>::push(T elem){
     }
     _mas[_size] = elem;
     _size++;
-    cout << "ok" << endl;
+    std::cout << "ok" << endl;
 }
-Template<typename T>
+template<typename T>
 T DynamicArray<T>::pop(){
     if (_size == 0){
-        cout << "error" << endl;
+        std::cout << "error" << endl;
         return 0;
     }
     T elem = _mas[_size - 1];
@@ -106,22 +104,22 @@ T DynamicArray<T>::pop(){
     }
     if (_mas) delete[] _mas;
     _mas = tmp;
-    cout << elem << endl;
+    std::cout << elem << endl;
     return elem;
 }
 template<typename T>
 T DynamicArray<T>::at_i(int i){
     if (i < 0 || i >= _size){
-        cout << "error" << endl;
+        std::cout << "error" << endl;
         return 0;
     }
-    cout << _mas[i] << endl;
+    std::cout << _mas[i] << endl;
     return _mas[i];
 }
 template<typename T>
 void DynamicArray<T>::resize(int size){
     if (size < 0){
-        cout << "error" << endl;
+        std::cout << "error" << endl;
         return;
     }
     T* tmp = new T[size];
@@ -133,16 +131,16 @@ void DynamicArray<T>::resize(int size){
     _mas = tmp;
     _size = new_size;
     _capacity = size;
-    cout << "ok" << endl;
+    std::cout << "ok" << endl;
 }
 template<typename T>
 int DynamicArray<T>::size(){
-    cout << _size << endl;
+    std::cout << _size << endl;
     return _size;
 }
 template<typename T>
 int DynamicArray<T>::capacity(){
-    cout << _capacity << endl;
+    std::cout << _capacity << endl;
     return _capacity;
 }
 template<typename T>
@@ -151,7 +149,7 @@ void DynamicArray<T>::clear(){
     _mas = new T[1];
     _capacity = 1;
     _size = 0;
-    cout << "ok" << endl;
+    std::cout << "ok" << endl;
 }
 template<typename T>
 DynamicArray<T>::~DynamicArray(){
@@ -159,5 +157,5 @@ DynamicArray<T>::~DynamicArray(){
 }
 template<typename T>
 void DynamicArray<T>::exit(){
-    cout << "bye" << endl;
+    std::cout << "bye" << endl;
 }
