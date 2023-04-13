@@ -95,7 +95,7 @@ template<typename T>
 T DynamicArray<T>::pop() {
     if (_size == 0) {
         std::cout << "error" << "\n";
-            ;
+        ;
         return 0;
     }
     T elem = _mas[_size - 1];
@@ -156,7 +156,9 @@ void DynamicArray<T>::clear() {
 }
 template<typename T>
 DynamicArray<T>::~DynamicArray() {
-    clear();
+    if (_mas) delete[] _mas;
+    _capacity = 0;
+    _size = 0;
 }
 template<typename T>
 void DynamicArray<T>::exit() {
