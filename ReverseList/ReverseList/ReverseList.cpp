@@ -13,11 +13,9 @@ private:
     Node* head_;
 
 public:
-    LinkedList();
+    LinkedList(std::string input);
 
     ~LinkedList();
-
-    LinkedList(std::string* content, int size);
 
     void add(std::string elem);
 
@@ -30,29 +28,12 @@ int main() {
     // string* mas = new string[]{ "3", "c", "2", "b", "1", "ka" };               
     // int size = 6;
 
-    LinkedList list;
+   // LinkedList list;
 
     std::string input;
     std::getline(std::cin, input);
 
-    // реверсируем строку, чтобы добавление слов шло в порядке ввода, а не в обратном
-    for (int i = 0; i < input.length() / 2; i++) {
-        char ch = input[i];
-        input[i] = input[input.length() - 1 - i];
-        input[input.length() - 1 - i] = ch;
-    }
-
-    // далее уже реверсированную строку разбираем на слова и добавляем слова в список 
-    // добавление в односвязный список уже реверсирует порядок
-    // Т.к. строка была реверсирована до разбора, восстанавливается порядок ввода.
-    std::size_t prev = 0, pos;
-    while ((pos = input.find_first_of(" ", prev)) != std::string::npos) {
-        if (pos > prev)
-            list.add(input.substr(prev, pos - prev));
-        prev = pos + 1;
-    }
-    if (prev < input.length())
-        list.add(input.substr(prev, std::string::npos));
+    LinkedList list(input);
 
     // вызов алгоритма реверса самого списка
     list.reverse();
@@ -67,15 +48,25 @@ Node::Node(std::string value, Node* next) {
     next_ = next;
 }
 
-LinkedList::LinkedList() {
-    head_ = nullptr;
-}
-
-LinkedList::LinkedList(std::string* content, int size)
-    : LinkedList() {
-    for (int i = 0; i < size; i++) {
-        add(content[i]);
+LinkedList::LinkedList(std::string input) {
+    // реверсируем строку, чтобы добавление слов шло в порядке ввода, а не в обратном
+    for (int i = 0; i < input.length() / 2; i++) {
+        char ch = input[i];
+        input[i] = input[input.length() - 1 - i];
+        input[input.length() - 1 - i] = ch;
     }
+
+    // далее уже реверсированную строку разбираем на слова и добавляем слова в список 
+    // добавление в односвязный список уже реверсирует порядок
+    // Т.к. строка была реверсирована до разбора, восстанавливается порядок ввода.
+    std::size_t prev = 0, pos;
+    while ((pos = input.find_first_of(" ", prev)) != std::string::npos) {
+        if (pos > prev)
+            add(input.substr(prev, pos - prev));
+        prev = pos + 1;
+    }
+    if (prev < input.length())
+        add(input.substr(prev, std::string::npos));
 }
 
 LinkedList::~LinkedList()
