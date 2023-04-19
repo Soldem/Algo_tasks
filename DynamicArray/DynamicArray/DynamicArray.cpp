@@ -7,9 +7,9 @@ template<typename T>
 class DynamicArray
 {
 private:
-    T* _mas;
-    int _size;
-    int _capacity;
+    T* mas_;
+    int size_;
+    int capacity_;
 
 public:
     DynamicArray();
@@ -20,7 +20,7 @@ public:
 
     T pop();
 
-    T at_i(int i);
+    T at(int i);
 
     void resize(int size);
 
@@ -46,7 +46,7 @@ int main() {
         }
         else if (command == "at") {
             std::cin >> num;
-            arr.at_i(num);
+            arr.at(num);
         }
         else if (command == "capacity") {
             arr.capacity();
@@ -72,52 +72,56 @@ int main() {
 }
 template<typename T>
 DynamicArray<T>::DynamicArray() {
-    _mas = new T[1];
-    _size = 0;
-    _capacity = 1;
+    mas_ = new T[1];
+    size_ = 0;
+    capacity_ = 1;
 }
 template<typename T>
 void DynamicArray<T>::push(T elem) {
-    if (_size >= _capacity) {
-        _capacity *= 2;
-        T* tmp = new T[_capacity];
-        for (int i = 0; i < _size; i++) {
-            tmp[i] = _mas[i];
+    if (size_ >= capacity_) {
+        capacity_ *= 2;
+        T* tmp = new T[capacity_];
+        for (int i = 0; i < size_; i++) {
+            tmp[i] = mas_[i];
         }
-        if (_mas) delete[] _mas;
-        _mas = tmp;
+        if (mas_) {
+            delete[] mas_;
+        }
+        mas_ = tmp;
     }
-    _mas[_size] = elem;
-    _size++;
+    mas_[size_] = elem;
+    size_++;
     std::cout << "ok" << "\n";
 }
 template<typename T>
 T DynamicArray<T>::pop() {
-    if (_size == 0) {
+    if (size_ == 0) {
         std::cout << "error" << "\n";
         ;
         return 0;
     }
-    T elem = _mas[_size - 1];
-    _size--;
-    _capacity = _size;
-    T* tmp = new T[_capacity];
-    for (int i = 0; i < _size; i++) {
-        tmp[i] = _mas[i];
+    T elem = mas_[size_ - 1];
+    size_--;
+    capacity_ = size_;
+    T* tmp = new T[capacity_];
+    for (int i = 0; i < size_; i++) {
+        tmp[i] = mas_[i];
     }
-    if (_mas) delete[] _mas;
-    _mas = tmp;
+    if (mas_) {
+        delete[] mas_;
+    }
+    mas_ = tmp;
     std::cout << elem << "\n";
     return elem;
 }
 template<typename T>
-T DynamicArray<T>::at_i(int i) {
-    if (i < 0 || i >= _size) {
+T DynamicArray<T>::at(int i) {
+    if (i < 0 || i >= size_) {
         std::cout << "error" << "\n";
         return 0;
     }
-    std::cout << _mas[i] << "\n";
-    return _mas[i];
+    std::cout << mas_[i] << "\n";
+    return mas_[i];
 }
 template<typename T>
 void DynamicArray<T>::resize(int size) {
@@ -126,39 +130,45 @@ void DynamicArray<T>::resize(int size) {
         return;
     }
     T* tmp = new T[size];
-    int new_size = (_size < size ? _size : size);
+    int new_size = (size_ < size ? size_ : size);
     for (int i = 0; i < new_size; i++) {
-        tmp[i] = _mas[i];
+        tmp[i] = mas_[i];
     }
-    if (_mas) delete[] _mas;
-    _mas = tmp;
-    _size = new_size;
-    _capacity = size;
+    if (mas_) {
+        delete[] mas_;
+    }
+    mas_ = tmp;
+    size_ = new_size;
+    capacity_ = size;
     std::cout << "ok" << "\n";
 }
 template<typename T>
 int DynamicArray<T>::size() {
-    std::cout << _size << "\n";
-    return _size;
+    std::cout << size_ << "\n";
+    return size_;
 }
 template<typename T>
 int DynamicArray<T>::capacity() {
-    std::cout << _capacity << "\n";
-    return _capacity;
+    std::cout << capacity_ << "\n";
+    return capacity_;
 }
 template<typename T>
 void DynamicArray<T>::clear() {
-    if (_mas) delete[] _mas;
-    _mas = new T[1];
-    _capacity = 1;
-    _size = 0;
+    if (mas_) {
+        delete[] mas_;
+    }
+    mas_ = new T[1];
+    capacity_ = 1;
+    size_ = 0;
     std::cout << "ok" << "\n";
 }
 template<typename T>
 DynamicArray<T>::~DynamicArray() {
-    if (_mas) delete[] _mas;
-    _capacity = 0;
-    _size = 0;
+    if (mas_) {
+        delete[] mas_;
+    }
+    capacity_ = 0;
+    size_ = 0;
 }
 template<typename T>
 void DynamicArray<T>::exit() {
