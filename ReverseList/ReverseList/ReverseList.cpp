@@ -2,10 +2,10 @@
 #include <string>
 
 struct Node {
-    std::string value_;
+    char value_;
     Node* next_;
 
-    Node(std::string value, Node* next);
+    Node(char value, Node* next);
 };
 
 class LinkedList {
@@ -17,7 +17,7 @@ public:
 
     ~LinkedList();
 
-    void add(std::string elem);
+    void add(char elem);
 
     void print();
 
@@ -25,10 +25,6 @@ public:
 };
 
 int main() {
-    // string* mas = new string[]{ "3", "c", "2", "b", "1", "ka" };               
-    // int size = 6;
-
-   // LinkedList list;
 
     std::string input;
     std::getline(std::cin, input);
@@ -39,34 +35,17 @@ int main() {
     list.reverse();
 
     list.print();
-
-    system("pause");
 }
 
-Node::Node(std::string value, Node* next) {
+Node::Node(char value, Node* next) {
     value_ = value;
     next_ = next;
 }
 
 LinkedList::LinkedList(std::string input) {
-    // реверсируем строку, чтобы добавление слов шло в порядке ввода, а не в обратном
-    for (int i = 0; i < input.length() / 2; i++) {
-        char ch = input[i];
-        input[i] = input[input.length() - 1 - i];
-        input[input.length() - 1 - i] = ch;
+    for (int i = input.length() - 1; i >= 0; i--) {
+        add(input[i]);
     }
-
-    // далее уже реверсированную строку разбираем на слова и добавляем слова в список 
-    // добавление в односвязный список уже реверсирует порядок
-    // Т.к. строка была реверсирована до разбора, восстанавливается порядок ввода.
-    std::size_t prev = 0, pos;
-    while ((pos = input.find_first_of(" ", prev)) != std::string::npos) {
-        if (pos > prev)
-            add(input.substr(prev, pos - prev));
-        prev = pos + 1;
-    }
-    if (prev < input.length())
-        add(input.substr(prev, std::string::npos));
 }
 
 LinkedList::~LinkedList()
@@ -80,7 +59,7 @@ LinkedList::~LinkedList()
     }
 }
 
-void LinkedList::add(std::string elem) {
+void LinkedList::add(char elem) {
     Node* current = new Node(elem, head_);
     head_ = current;
 }
@@ -88,7 +67,7 @@ void LinkedList::add(std::string elem) {
 void LinkedList::print() {
     Node* current = head_;
     while (current) {
-        std::cout << current->value_ << " ";
+        std::cout << current->value_;
         current = current->next_;
     }
     std::cout << std::endl;
