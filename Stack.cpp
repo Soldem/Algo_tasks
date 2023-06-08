@@ -2,71 +2,83 @@
 
 using namespace std;
 
-template<typename T>
-class Node
-{
+template <typename T>
+class Node {
 private:
-    T _value;
-    Node<T>* _next;
+    T value_;
+    Node<T>* next_;
 
 public:
-    Node(T value, Node<T>* next);
+    Node(T value, Node<T>* Next);
 
-    void set_value(T value);
+    void SetValue(T value);
 
-    T get_value();
+    T GetValue();
 
-    Node<T>* next();
+    Node<T>* Next();
 };
 
-template<typename T>
-class Stack
-{
+template <typename T>
+class Stack {
 private:
-    Node<T>* _head;
-    int _size;
+    Node<T>* head_;
+    int size_;
 
 public:
     Stack();
 
-    void push(T elem);
+    void Push(T elem);
 
-    T pop();
+    T Pop();
 
-    T back();
+    T Back();
 
-    int size();
+    int Size();
 
-    void clear();
+    void Clear();
 
-    void exit();
+    void Exit();
 };
 
-int main()
-{
+int main() {
     Stack<int> stack;
 
     int iq;
     std::string command;
 
-    while (true)
-    {
+    while (true) {
         cin >> command;
-        if (command == "push")
-        {
+        if (command == "push") {
             cin >> iq;
-            stack.push(iq);
+            stack.Push(iq);
+            cout << "ok" << endl;
         }
-        else if (command == "pop")
-            stack.pop();
-        else if (command == "back")
-            stack.back();
-        else if (command == "size")
-            stack.size();
-        else if (command == "clear")
-            stack.clear();
+        else if (command == "pop") {
+            try {
+                cout << stack.Pop() << endl;
+            }
+            catch (exception e) {
+                cout << "error" << endl;
+            }
+        }
+        else if (command == "back") {
+            try {
+                cout << stack.Back() << endl;
+            }
+            catch (exception e) {
+                cout << "error" << endl;
+            }
+        }
+        else if (command == "size") {
+            cout << stack.Size() << endl;
+        }
+        else if (command == "clear") {
+            stack.Clear();
+            cout << "ok" << endl;
+        }
         else if (command == "exit") {
-            stack.exit();
+            stack.Clear();
+            cout << "bye" << endl;
             break;
         }
         else
@@ -74,104 +86,76 @@ int main()
     }
 }
 
-template<typename T>
-Node<T>::Node(T value, Node<T>* next)
-{
-    _value = value;
-    _next = next;
+template <typename T>
+Node<T>::Node(T value, Node<T>* Next) {
+    value_ = value;
+    next_ = Next;
 }
 
-template<typename T>
-void Node<T>::set_value(T value)
-{
-    _value = value;
+template <typename T>
+void Node<T>::SetValue(T value) {
+    value_ = value;
 }
 
-template<typename T>
-T Node<T>::get_value()
-{
-    return _value;
+template <typename T>
+T Node<T>::GetValue() {
+    return value_;
 }
 
-template<typename T>
-Node<T>* Node<T>::next()
-{
-    return _next;
+template <typename T>
+Node<T>* Node<T>::Next() {
+    return next_;
 }
 
-template<typename T>
-Stack<T>::Stack()
-{
-    _head = nullptr;
-    _size = 0;
+template <typename T>
+Stack<T>::Stack() {
+    head_ = nullptr;
+    size_ = 0;
 }
 
-template<typename T>
-void Stack<T>::push(T elem)
-try {
-        Node<T>* current = new Node<T>(elem, _head);
-        _head = current;
-        _size++;
-        
+template <typename T>
+void Stack<T>::Push(T elem) {
+    Node<T>* current = new Node<T>(elem, head_);
+    head_ = current;
+    size_++;
+}
+
+template <typename T>
+T Stack<T>::Pop() {
+    if (size_ == 0) {
+        throw exception("error");
     }
+    Node<T>* current = head_;
+
+    head_ = current->Next();
+
+    T elem = current->Next()->GetValue();
+    delete current;
+    size_--;
+
+    return elem;
 }
 
-template<typename T>
-T Stack<T>::pop()
-try {
-        if (_size <= 0 || !_head)
-        {
-            throw "error";
-            return 0;
-        }
-        Node<T>* current = _head;
-        _head = current->next();
-        T elem = current->get_value();
+template <typename T>
+T Stack<T>::Back() {
+    if (size_ == 0) {
+        throw exception("error");
+    }
+    return head_->GetValue();
+}
+
+template <typename T>
+int Stack<T>::Size() {
+    return size_;
+}
+
+template <typename T>
+void Stack<T>::Clear() {
+    Node<T>* temp;
+    while (head_) {
+        Node<T>* current = head_;
+        head_ = head_->Next();
         delete current;
-        _size--;
-        cout << elem << endl;
-        return elem;
     }
-}
-
-template<typename T>
-T Stack<T>::back()
-try {
-        if (_size <= 0 || !_head)
-        {
-            throw "error";
-            return 0;
-        }
-        cout << _head->get_value() << endl;
-        return _head->get_value();
-    }
-}
-
-template<typename T>
-int Stack<T>::size()
-{
-    cout << _size << endl;
-    return _size;
-}
-
-template<typename T>
-void Stack<T>::clear()
-try {
-        Node<T>* next = _head;
-        while (next)
-        {
-            Node<T>* current = next;
-            next = current->next();
-            delete current;
-        }
-        _head = nullptr;
-        _size = 0;
-        throw "ok";
-    }
-}
-
-template<typename T>
-void Stack<T>::exit()
-{
-    cout << "bye" << endl;
+    size_ = 0;
 }
