@@ -1,173 +1,108 @@
-﻿#include <iostream>
+#include <iostream>
 
 using namespace std;
 
-template<typename T>
-class Node
-{
-private:
-    T _value;
-    Node<T>* _next;
+template <typename T>
+class Stack {
+ private:
+  T arr_[10000];
+  int size_;
 
-public:
-    Node(T value, Node<T>* next);
+ public:
+  Stack();
 
-    void set_value(T value);
+  void Push(T elem);
 
-    T get_value();
+  T Pop();
 
-    Node<T>* next();
+  T Back();
+
+  int Size();
+
+  void Clear();
 };
 
-template<typename T>
-class Stack
-{
-private:
-    Node<T>* _head;
-    int _size;
+int Command(std::string command, Stack<int>& stack) {
+  int iq;
 
-public:
-    Stack();
-
-    void push(T elem);
-
-    T pop();
-
-    T back();
-
-    int size();
-
-    void clear();
-
-    void exit();
-};
-
-int main()
-{
-    Stack<int> stack;
-
-    int iq;
-    std::string command;
-
-    while (true)
-    {
-        cin >> command;
-        if (command == "push")
-        {
-            cin >> iq;
-            stack.push(iq);
-        }
-        else if (command == "pop")
-            stack.pop();
-        else if (command == "back")
-            stack.back();
-        else if (command == "size")
-            stack.size();
-        else if (command == "clear")
-            stack.clear();
-        else if (command == "exit") {
-            stack.exit();
-            break;
-        }
-        else
-            cout << "error command" << endl;
+  try {
+    if (command == "push") {
+      cin >> iq;
+      stack.Push(iq);
+      cout << "ok" << endl;
+    } else if (command == "pop") {
+      cout << stack.Pop() << endl;
+    } else if (command == "back") {
+      cout << stack.Back() << endl;
+    } else if (command == "size") {
+      cout << stack.Size() << endl;
+    } else if (command == "clear") {
+      stack.Clear();
+      cout << "ok" << endl;
+    } else if (command == "exit") {
+      stack.Clear();
+      cout << "bye" << endl;
+      return 0;
+    } else {
+      cout << "error command" << endl;
     }
+  } catch (const char* message) {
+    cout << "error" << endl;
+  }
+  return 1;
 }
 
-template<typename T>
-Node<T>::Node(T value, Node<T>* next)
-{
-    _value = value;
-    _next = next;
-}
+int main() {
+  Stack<int> stack;
+  std::string command;
 
-template<typename T>
-void Node<T>::set_value(T value)
-{
-    _value = value;
-}
-
-template<typename T>
-T Node<T>::get_value()
-{
-    return _value;
-}
-
-template<typename T>
-Node<T>* Node<T>::next()
-{
-    return _next;
-}
-
-template<typename T>
-Stack<T>::Stack()
-{
-    _head = nullptr;
-    _size = 0;
-}
-
-template<typename T>
-void Stack<T>::push(T elem)
-{
-    Node<T>* current = new Node<T>(elem, _head);
-    _head = current;
-    _size++;
-    cout << "ok" << endl;
-}
-
-template<typename T>
-T Stack<T>::pop()
-{
-    if (_size <= 0 || !_head)
-    {
-        cout << "error" << endl;
-        return 0;
+  while (true) {
+    std::cin >> command;
+    if (Command(command, stack) == 0) {
+      break;
     }
-    Node<T>* current = _head;
-    _head = current->next();
-    T elem = current->get_value();
-    delete current;
-    _size--;
-    cout << elem << endl;
-    return elem;
+  }
 }
 
-template<typename T>
-T Stack<T>::back()
-{
-    if (_size <= 0 || !_head)
-    {
-        cout << "error" << endl;
-        return 0;
-    }
-    cout << _head->get_value() << endl;
-    return _head->get_value();
+template <typename T>
+Stack<T>::Stack() {
+  size_ = 0;
 }
 
-template<typename T>
-int Stack<T>::size()
-{
-    cout << _size << endl;
-    return _size;
+template <typename T>
+void Stack<T>::Push(T elem) {
+  if (size_ == 10000) {
+    throw "error";
+  }
+
+  arr_[size_++] = elem;
 }
 
-template<typename T>
-void Stack<T>::clear()
-{
-    Node<T>* next = _head;
-    while (next)
-    {
-        Node<T>* current = next;
-        next = current->next();
-        delete current;
-    }
-    _head = nullptr;
-    _size = 0;
-    cout << "ok" << endl;
+template <typename T>
+T Stack<T>::Pop() {
+  if (size_ <= 0) {
+    throw "error";
+  }
+  T value = arr_[size_ - 1];
+  size_--;
+  return value;
 }
 
-template<typename T>
-void Stack<T>::exit()
-{
-    cout << "bye" << endl;
+template <typename T>
+T Stack<T>::Back() {
+  if (size_ == 0) {
+    throw "error";
+  }
+  return arr_[size_ - 1];
+  ;
+}
+
+template <typename T>
+int Stack<T>::Size() {
+  return size_;
+}
+
+template <typename T>
+void Stack<T>::Clear() {
+  size_ = 0;
 }
