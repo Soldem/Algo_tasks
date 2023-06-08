@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-void quik_sort(int* s_arr, int first, int last) {
+void Quik_sort(int* s_arr, int first, int last) {
   if (first < last) {
     int left = first, right = last, middle = s_arr[(left + right) / 2];
     do {
@@ -16,8 +16,8 @@ void quik_sort(int* s_arr, int first, int last) {
         right--;
       }
     } while (left <= right);
-    quik_sort(s_arr, first, right);
-    quik_sort(s_arr, left, last);
+    Quik_sort(s_arr, first, right);
+    Quik_sort(s_arr, left, last);
   }
 }
 
@@ -30,7 +30,7 @@ int main() {
     std::cin >> a[i];
   }
 
-  quik_sort(a, 0, n - 1);
+  Quik_sort(a, 0, n - 1);
   for (int i = 0; i < n; i++) {
     std::cout << a[i] << " ";
   }
