@@ -3,159 +3,106 @@
 using namespace std;
 
 template <typename T>
-class Node {
-private:
-    T value_;
-    Node<T>* next_;
-
-public:
-    Node(T value, Node<T>* Next);
-
-    void SetValue(T value);
-
-    T GetValue();
-
-    Node<T>* Next();
-};
-
-template <typename T>
 class Stack {
-private:
-    Node<T>* head_;
-    int size_;
+ private:
+  T arr_[10000];
+  int size_;
 
-public:
-    Stack();
+ public:
+  Stack();
 
-    void Push(T elem);
+  void Push(T elem);
 
-    T Pop();
+  T Pop();
 
-    T Back();
+  T Back();
 
-    int Size();
+  int Size();
 
-    void Clear();
-
-    void Exit();
+  void Clear();
 };
+
+int Command(std::string command, Stack<int>& stack) {
+  int iq;
+
+  try {
+    if (command == "push") {
+      cin >> iq;
+      stack.Push(iq);
+      cout << "ok" << endl;
+    } else if (command == "pop") {
+      cout << stack.Pop() << endl;
+    } else if (command == "back") {
+      cout << stack.Back() << endl;
+    } else if (command == "size") {
+      cout << stack.Size() << endl;
+    } else if (command == "clear") {
+      stack.Clear();
+      cout << "ok" << endl;
+    } else if (command == "exit") {
+      stack.Clear();
+      cout << "bye" << endl;
+      return 0;
+    } else {
+      cout << "error command" << endl;
+    }
+  } catch (const char* message) {
+    cout << "error" << endl;
+  }
+  return 1;
+}
 
 int main() {
-    Stack<int> stack;
+  Stack<int> stack;
+  std::string command;
 
-    int iq;
-    std::string command;
-
-    while (true) {
-        cin >> command;
-        if (command == "push") {
-            cin >> iq;
-            stack.Push(iq);
-            cout << "ok" << endl;
-        }
-        else if (command == "pop") {
-            try {
-                cout << stack.Pop() << endl;
-            }
-            catch (exception e) {
-                cout << "error" << endl;
-            }
-        }
-        else if (command == "back") {
-            try {
-                cout << stack.Back() << endl;
-            }
-            catch (exception e) {
-                cout << "error" << endl;
-            }
-        }
-        else if (command == "size") {
-            cout << stack.Size() << endl;
-        }
-        else if (command == "clear") {
-            stack.Clear();
-            cout << "ok" << endl;
-        }
-        else if (command == "exit") {
-            stack.Clear();
-            cout << "bye" << endl;
-            break;
-        }
-        else
-            cout << "error command" << endl;
+  while (true) {
+    std::cin >> command;
+    if (Command(command, stack) == 0) {
+      break;
     }
-}
-
-template <typename T>
-Node<T>::Node(T value, Node<T>* Next) {
-    value_ = value;
-    next_ = Next;
-}
-
-template <typename T>
-void Node<T>::SetValue(T value) {
-    value_ = value;
-}
-
-template <typename T>
-T Node<T>::GetValue() {
-    return value_;
-}
-
-template <typename T>
-Node<T>* Node<T>::Next() {
-    return next_;
+  }
 }
 
 template <typename T>
 Stack<T>::Stack() {
-    head_ = nullptr;
-    size_ = 0;
+  size_ = 0;
 }
 
 template <typename T>
 void Stack<T>::Push(T elem) {
-    Node<T>* current = new Node<T>(elem, head_);
-    head_ = current;
-    size_++;
+  if (size_ == 10000) {
+    throw "error";
+  }
+
+  arr_[size_++] = elem;
 }
 
 template <typename T>
 T Stack<T>::Pop() {
-    if (size_ == 0) {
-        throw exception("error");
-    }
-    Node<T>* current = head_;
-
-    head_ = current->Next();
-
-    T elem = current->Next()->GetValue();
-    delete current;
-    size_--;
-
-    return elem;
+  if (size_ <= 0) {
+    throw "error";
+  }
+  T value = arr_[size_ - 1];
+  size_--;
+  return value;
 }
 
 template <typename T>
 T Stack<T>::Back() {
-    if (size_ == 0) {
-        throw exception("error");
-    }
-    return head_->GetValue();
+  if (size_ == 0) {
+    throw "error";
+  }
+  return arr_[size_ - 1];
+  ;
 }
 
 template <typename T>
 int Stack<T>::Size() {
-    return size_;
+  return size_;
 }
 
 template <typename T>
 void Stack<T>::Clear() {
-    Node<T>* temp;
-    while (head_) {
-        Node<T>* current = head_;
-        head_ = head_->Next();
-        delete current;
-    }
-    size_ = 0;
+  size_ = 0;
 }
