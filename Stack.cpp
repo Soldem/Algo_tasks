@@ -108,40 +108,43 @@ Stack<T>::Stack()
 
 template<typename T>
 void Stack<T>::push(T elem)
-{
-    Node<T>* current = new Node<T>(elem, _head);
-    _head = current;
-    _size++;
-    cout << "ok" << endl;
+try {
+        Node<T>* current = new Node<T>(elem, _head);
+        _head = current;
+        _size++;
+        
+    }
 }
 
 template<typename T>
 T Stack<T>::pop()
-{
-    if (_size <= 0 || !_head)
-    {
-        cout << "error" << endl;
-        return 0;
+try {
+        if (_size <= 0 || !_head)
+        {
+            throw "error";
+            return 0;
+        }
+        Node<T>* current = _head;
+        _head = current->next();
+        T elem = current->get_value();
+        delete current;
+        _size--;
+        cout << elem << endl;
+        return elem;
     }
-    Node<T>* current = _head;
-    _head = current->next();
-    T elem = current->get_value();
-    delete current;
-    _size--;
-    cout << elem << endl;
-    return elem;
 }
 
 template<typename T>
 T Stack<T>::back()
-{
-    if (_size <= 0 || !_head)
-    {
-        cout << "error" << endl;
-        return 0;
+try {
+        if (_size <= 0 || !_head)
+        {
+            throw "error";
+            return 0;
+        }
+        cout << _head->get_value() << endl;
+        return _head->get_value();
     }
-    cout << _head->get_value() << endl;
-    return _head->get_value();
 }
 
 template<typename T>
@@ -153,17 +156,18 @@ int Stack<T>::size()
 
 template<typename T>
 void Stack<T>::clear()
-{
-    Node<T>* next = _head;
-    while (next)
-    {
-        Node<T>* current = next;
-        next = current->next();
-        delete current;
+try {
+        Node<T>* next = _head;
+        while (next)
+        {
+            Node<T>* current = next;
+            next = current->next();
+            delete current;
+        }
+        _head = nullptr;
+        _size = 0;
+        throw "ok";
     }
-    _head = nullptr;
-    _size = 0;
-    cout << "ok" << endl;
 }
 
 template<typename T>
