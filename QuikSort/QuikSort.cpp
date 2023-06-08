@@ -2,12 +2,19 @@
 #include <iostream>
 #include <vector>
 
-void quik_sort(int* s_arr, int first, int last) {
+template <typename T>
+struct IsLess {
+    bool operator()(const T& l, const T& r) const { return l < r; }
+};
+
+template <class T, class TLess = IsLess<T>>
+void quik_sort(T* s_arr, int first, int last, const TLess& t_less = TLess()) {
     if (first < last) {
         int left = first, right = last, middle = s_arr[(left + right) / 2];
         do {
-            while (middle > s_arr[left]) left++;
-            while (middle < s_arr[right]) right--;
+            while (t_less(s_arr[left], middle)) left++;
+            while (t_less(middle, s_arr[right])) right--;
+
             if (left <= right) {
                 int tmp = s_arr[left];
                 s_arr[left] = s_arr[right];
